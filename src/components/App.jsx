@@ -26,9 +26,15 @@ const App = () => {
     };
     getData();
   }, [query, page]);
+
+  const handleSetQuery = (query) => {
+    setQuery(query);
+    setHits([]);
+    setPage(0);
+  };
   return (
     <div>
-      <SearchBar setQuery={setQuery} />
+      <SearchBar setQuery={handleSetQuery} />
       {isLoading && (
         <Comment
           visible={true}
