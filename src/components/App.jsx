@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import List from "./List/List";
 import { fetchNews } from "../services/api";
 import SearchBar from "./SearchBar/SearchBar";
+import { Comment } from "react-loader-spinner";
 
 const App = () => {
   const [hits, setHits] = useState([]);
@@ -24,7 +25,18 @@ const App = () => {
   return (
     <div>
       <SearchBar setQuery={setQuery} />
-      {isLoading && <p>Loading data, please wait...</p>}
+      {isLoading && (
+        <Comment
+          visible={true}
+          height="180"
+          width="180"
+          ariaLabel="comment-loading"
+          wrapperStyle={{}}
+          wrapperClass="comment-wrapper"
+          color="#fff"
+          backgroundColor="#F4442E"
+        />
+      )}
       <List items={hits} />
     </div>
   );
