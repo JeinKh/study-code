@@ -8,20 +8,24 @@ const App = () => {
   const [hits, setHits] = useState([]);
   const [query, setQuery] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [isError, setIsError] = useState(false);
+  const [page, setPage] = useState(0);
   useEffect(() => {
     const getData = async () => {
       try {
         setIsLoading(true);
-        const response = await fetchNews(query);
-        setHits(response.hits);
+        setIsError(false);
+        const response = await fetchNews(query, page);
+        setHits((prev) => [...prev, ...response.hits]);
       } catch (error) {
         console.log(error);
+        setIsError(true);
       } finally {
         setIsLoading(false);
       }
     };
     getData();
-  }, [query]);
+  }, [query, page]);
   return (
     <div>
       <SearchBar setQuery={setQuery} />
@@ -37,7 +41,9 @@ const App = () => {
           backgroundColor="#F4442E"
         />
       )}
+      {isError && <p>Something wrong! Try again...</p>}
       <List items={hits} />
+      <button onClick={() => setPage((prev) => prev + 1)}>Load more</button>
     </div>
   );
 };
